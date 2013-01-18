@@ -4,18 +4,18 @@ use Laravel\Messages;
 
 abstract class Precedent extends Eloquent {
 
-	 /**
-	* Detective Errors
-	*
-	* @var Laravel\Messages $errors
-	*/
+	/**
+	 * Precedent Errors
+	 *
+	 * @var Laravel\Messages
+	 */
 	public $errors;
 
 	/**
-	* Enable Cache
-	*
-	* @var bool $cache
-	*/
+	 * Cache enabled
+	 *
+	 * @var boolean
+	 */
 	public static $cache = false;
 
 	/**
@@ -23,44 +23,44 @@ abstract class Precedent extends Eloquent {
 	 *
 	 * For nommaly the driver is inherit from config.
 	 *
-	 * @var string $cache_driver
+	 * @var string
 	 */
 	public static $cache_driver = null;
 
 	/**
-	* Cache live in minutes
-	*
-	* @var integer $cache_ttl
-	*/
+	 * Cache live in minutes
+	 *
+	 * @var integer
+	 */
 	public static $cache_ttl = 15;
 
    /**
 	* Precedent Caches
 	*
-	* @var array $object_cached
+	* @var array
 	*/
 	public static $object_cached = array();
 
 	/**
-	* Precedent Validation Rules
-	*
-	* @var array $rules
-	*/
+	 * Precedent validate rules
+	 *
+	 * @var array
+	 */
 	public static $rules = array();
 
 	/**
-	* Precedent Validation Messages
-	*
-	* @var array $messages
-	*/
+	 * Precedent Validation Messages
+	 *
+	 * @var array
+	 */
 	public static $messages = array();
 
 	/**
-	* Create new Precedent instance
-	*
-	* @param  array $attributes
-	* @return void
-	*/
+	 * Create new Precedent instance
+	 *
+	 * @param array   $attributes
+	 * @param boolean $exists
+	 */
 	public function __construct($attributes = array(), $exists = false)
 	{
 		// initialize empty messages object
@@ -141,13 +141,16 @@ abstract class Precedent extends Eloquent {
 	}
 
 	/**
-	* Validate the Model
-	*    runs the validator and binds any errors to the model
-	*
-	* @param  array  $rules
-	* @param  array  $messages
-	* @return bool
-	*/
+	 * Validate the Model
+	 *
+	 * runs the validator and binds any errors to the model
+	 *
+	 * @param  array  $data
+	 * @param  array  $withs
+	 * @param  array  $rules
+	 * @param  array  $messages
+	 * @return boolean
+	 */
 	public function valid($data = array(), $withs = array(), $rules = array(), $messages = array())
 	{
 		$valid = true;
@@ -224,13 +227,14 @@ abstract class Precedent extends Eloquent {
 	}
 
 	/**
-	* Magic Method for setting Precedent attributes.
-	*    ignores unchanged attibutes delegates to Eloquent
-	*
-	* @param  string  $key
-	* @param  string|num|bool|etc  $value
-	* @return void
-	*/
+	 * Magic Method for setting Precedent attributes.
+	 *
+	 * ignores unchanged attibutes delegates to Eloquent
+	 *
+	 * @param  string $key
+	 * @param  string|num|bool|etc $value
+	 * @return void
+	 */
 	public function __set($key, $value)
 	{
 		// only update an attribute if there's a change
