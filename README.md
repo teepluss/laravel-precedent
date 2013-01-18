@@ -5,10 +5,12 @@ laravel-precedent
 
 ## Installation
 
+fixed for laravel 3.1.12
+
 Install this bundle by running the following CLI command:
 
 	php artisan bundle:install precedent
-	
+
 Add the following line to application/bundles.php
 
 	'precedent' => array(
@@ -18,18 +20,18 @@ Add the following line to application/bundles.php
 			),
 		)
 	),
-	
-## Example Usage 
+
+## Example Usage
 
 Enable config profile to debug.
-	
+
 	'profiler' => true
-	
+
 
 Enable cache using attribute $cache in model.
 ```php
 class User extends Precedent {
-	
+
 	public static $cache = true;
 
 }
@@ -48,7 +50,7 @@ $user = User::find(10);
 // Purge cache on delete.
 $user->delete();
 
-// and 
+// and
 
 // Purge cache on update.
 $user = User::find(10);
@@ -61,4 +63,4 @@ $user->save();
 
 ## Support or Contact
 
-If you have some problem, Contact teepluss@gmail.com 
+If you have some problem, Contact teepluss@gmail.com
