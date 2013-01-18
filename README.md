@@ -61,6 +61,59 @@ $user->fill(array(
 $user->save();
 ```
 
+## Bonus
+
+Validate via model
+
+```php
+class User extends Precedent {
+
+	/**
+	 * Cache enabled
+	 *
+	 * @type {Boolean}
+	 */
+	public static $cache = true;
+
+	/**
+	 * Validate rules
+	 *
+	 * @type array
+	 */
+	public static $rules = array(
+		'email' => 'required|unique:users'
+	);
+
+	/**
+	 * Validate messages
+	 *
+	 * @type array
+	 */
+	public static $messages = array(
+		'email_required' => 'Please enter you email.',
+		'email_email'    => 'Please enter valid email.'
+	);
+
+}
+```
+
+Your controller.
+
+```php
+$user = new User; // or User::find(1);
+
+$data = array(
+	'email' => Input::get('email')
+);
+
+if ( ! $user->valid($data))
+{
+	$errors = $user->errors;
+
+	return Redirect::back()->with_errors($errors)->with_input();
+}
+```
+
 ## Support or Contact
 
 If you have some problem, Contact teepluss@gmail.com
