@@ -16,7 +16,8 @@ Add the following line to application/bundles.php
 	'precedent' => array(
 		'autoloads' => array(
 			'map' => array(
-				'Precedent' => '(:bundle)/model.php'
+				'Has_Many_And_Belongs_To' => '(:bundle)/has_many_and_belongs_to.php',
+				'Precedent'               => '(:bundle)/model.php'
 			),
 		)
 	),
@@ -61,7 +62,7 @@ $user->fill(array(
 $user->save();
 ```
 
-## Bonus
+## Bonus 1
 
 Validate via model
 
@@ -112,6 +113,15 @@ if ( ! $user->valid($data))
 
 	return Redirect::back()->with_errors($errors)->with_input();
 }
+```
+
+## Bonus 2
+
+Can add attributes at method 'sync' for has_many_and_belongs_to relationship.
+
+```php
+$user = User::find(1);
+$user->roles()->sync(array(1, 3, 9), array('remark' => 'wow'));
 ```
 
 ## Support or Contact

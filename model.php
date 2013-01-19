@@ -227,6 +227,23 @@ abstract class Precedent extends Eloquent {
 	}
 
 	/**
+	 * Get the query for a many-to-many relationship.
+	 *
+	 * This method will add some rack feature on eloquent
+	 * sync method can be add with attributes.
+	 *
+	 * @param  string        $model
+	 * @param  string        $table
+	 * @param  string        $foreign
+	 * @param  string        $other
+	 * @return Has_Many_And_Belongs_To
+	 */
+	public function has_many_and_belongs_to($model, $table = null, $foreign = null, $other = null)
+	{
+		return new \Has_Many_And_Belongs_To($this, $model, $table, $foreign, $other);
+	}
+
+	/**
 	 * Magic Method for setting Precedent attributes.
 	 *
 	 * ignores unchanged attibutes delegates to Eloquent
