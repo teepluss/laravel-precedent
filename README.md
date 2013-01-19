@@ -3,9 +3,13 @@ laravel-precedent
 
 ***Auto Cache and Purge on Eloquent***
 
-## Installation
+## Features
 
-fixed for laravel 3.1.12
+1. Auto cache on find method and purge on update, delete.
+2. Validate via model.
+2. Possible to sync data for fields in the pivote table.
+
+## Installation
 
 Install this bundle by running the following CLI command:
 
