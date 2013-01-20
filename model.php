@@ -182,7 +182,7 @@ abstract class Precedent extends Eloquent {
 				{
 					if (class_exists($with))
 					{
-						$rules = array_merge($rules, $with::$messages);
+						$messages = array_merge($messages, $with::$messages);
 					}
 				}
 			}
