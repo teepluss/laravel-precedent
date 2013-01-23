@@ -81,42 +81,6 @@ abstract class Precedent extends Eloquent {
 	}
 
 	/**
-	 * Find a model by its primary key with improve cache in object array.
-	 *
-	 * @param  string  $id
-	 * @param  array   $columns
-	 * @return Model
-	 */
-	public static function find($id)
-	{
-		$model = new static(array(), true);
-
-		$ckey = $model->key_cache($id);
-
-		// Object cache on every request even not cache.
-		if ( ! $result = array_get(static::$object_cached, $ckey))
-		{
-			if (static::$cache === true)
-			{
-				if ( ! $result = Cache::get($ckey))
-				{
-					$result = $model->query()->where(static::$key, '=', $id)->first();
-
-					Cache::put($ckey, $result, static::$cache_ttl);
-				}
-			}
-			else
-			{
-				$result = $model->query()->where(static::$key, '=', $id)->first();
-			}
-
-			array_set(static::$object_cached, $ckey, $result);
-		}
-
-		return $result;
-	}
-
-	/**
 	 * Override fire_event to remove cache, if cache enabled.
 	 *
 	 * @param  string  $event
@@ -259,6 +223,47 @@ abstract class Precedent extends Eloquent {
 		{
 			parent::__set($key, $value);
 		}
+	}
+	
+	/**
+	 * Call static method.
+	 *
+	 * Embeded cache with find method.
+	 *
+	 * @param  string  $method
+	 * @param  array   $parameters
+	 * @return Object
+	 */
+	public static function __callStatic($method, $parameters)
+	{
+		if ($method == 'find')
+		{
+			$id = $parameters[0];
+			$ckey = get_called_class() . $id;
+
+			if ( ! $result = array_get(static::$object_cached, $ckey))
+			{
+				if (static::$cache === true)
+				{					
+					if ( ! $result = Cache::get($ckey))
+					{
+						$result = parent::__callStatic($method, $parameters); 
+						
+						Cache::put($ckey, $result, static::$cache_ttl);
+					}
+				}
+				else
+				{
+					$result = parent::__callStatic($method, $parameters); 
+				}
+	
+				array_set(static::$object_cached, $ckey, $result);
+			}
+			
+			return $result;
+		}
+	
+		return parent::__callStatic($method, $parameters); 
 	}
 
 }
