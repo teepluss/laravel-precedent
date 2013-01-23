@@ -42,10 +42,15 @@ class User extends Precedent {
 }
 ```
 
-Auto Cache on find method.
+Auto Cache on find method (Work only static method).
 ```php
 // Cache on find.
+// This works.
 User::find(10);
+
+// This doesn't work.
+$user = new User;
+$user->find(10)
 ```
 
 Auto Purge on delete and update method.

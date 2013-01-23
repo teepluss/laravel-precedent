@@ -75,9 +75,9 @@ abstract class Precedent extends Eloquent {
 	 * @param  integer $id
 	 * @param  string  $array
 	 */
-	public function key_cache($id)
+	public static function key_cache($id)
 	{
-		return Str::lower(get_class($this)).'_'.$id;
+		return Str::lower(get_called_class()).'_'.$id;
 	}
 
 	/**
@@ -96,7 +96,7 @@ abstract class Precedent extends Eloquent {
 			// events to detect
 			if (in_array($event, array('updated', 'saved', 'deleted')))
 			{
-				$ckey = $this->key_cache($this->id);
+				$ckey = static::key_cache($this->id);				
 
 				// remove exists cache
 				Cache::forget($ckey);
@@ -236,10 +236,11 @@ abstract class Precedent extends Eloquent {
 	 */
 	public static function __callStatic($method, $parameters)
 	{
-		if ($method == 'find')
+		if (strcmp($method, 'find') === 0 and ! isset($parameters[1]))
 		{
 			$id = $parameters[0];
-			$ckey = get_called_class() . $id;
+			
+			$ckey = static::key_cache($id);
 
 			if ( ! $result = array_get(static::$object_cached, $ckey))
 			{
@@ -247,16 +248,19 @@ abstract class Precedent extends Eloquent {
 				{					
 					if ( ! $result = Cache::get($ckey))
 					{
-						$result = parent::__callStatic($method, $parameters); 
-						
-						Cache::put($ckey, $result, static::$cache_ttl);
+						$result = parent::__callStatic('find', $parameters);
+						 
+						if ( ! is_null($result))
+						{						
+							Cache::put($ckey, $result, static::$cache_ttl);
+						}
 					}
 				}
 				else
 				{
-					$result = parent::__callStatic($method, $parameters); 
+					$result = parent::__callStatic('find', $parameters); 
 				}
-	
+
 				array_set(static::$object_cached, $ckey, $result);
 			}
 			
